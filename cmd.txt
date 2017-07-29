@@ -1,0 +1,72 @@
+#a reasonable choice for rectangle points estimation:
+cruise speed: 0.7,flow threshold: 25, estimate points threshold 15
+
+
+# How to make file ?
+Go to opt/dronetest/build  then make !
+
+#flowTrack
+give the avoidance order
+
+#flowControl
+calculate and publish optical flow information 
+
+
+# open the simulator
+
+roslaunch cvg_sim_gazebo 4walls.launch
+
+# open the controller
+rosrun tum
+
+rostopic pub -1 /ardrone/takeoff std_msgs/Empty
+rostopic pub -1 /ardrone/land std_msgs/Empty
+rosservice call /ardrone/togglecam
+
+
+# fly forward
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# fly backward
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: -1.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# fly to left 
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 1.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# fly to right 
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: -1.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# fly up 
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: 1.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# fly down 
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: -1.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+# counterclockwise rotation
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 1.0}}'
+
+# clockwise rotation
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: -1.0}}'
+
+# stop
+rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+
+# The output camera
+rosrun image_view image_view image:=/ardrone/image_raw
+
+# The front camera
+rosrun image_view image_view image:=/ardrone/front/image_raw
+
+# The buttom camera
+rosrun image_view image_view image:=/ardrone/bottom/image_raw
+
+# The height sensor
+rostopic echo /sonar_height
+
+#The navigation info
+rostopic echo /ardrone/navdata
+
+
+
+rosrun image_view image_view image:=/ardrone/image_raw
