@@ -1,0 +1,106 @@
+#include "ros/ros.h"
+#include "ros/callback_queue.h"
+
+
+#include "std_msgs/Empty.h" 
+#include "std_msgs/Int64MultiArray.h"
+#include "std_msgs/Float64MultiArray.h"
+#include "geometry_msgs/Twist.h"
+#include "sensor_msgs/Imu.h"
+#include "ardrone_autonomy/Navdata.h"
+#include "ardrone_autonomy/navdata_altitude.h"
+#include "iostream"
+using namespace std;
+
+
+const double thresholdImu = 0.20;
+const double thresholdLevel = 1.0;
+const double thresholdHover = 150;
+
+const float thresholdFlow =5; //for forward
+const float thresholdStop = 15;//for stop
+const float thresholdBack = 10;// for back
+const double thresholdX = 0.001;
+const double thresholdY = 0.001;
+const double gain = 1.0;
+const double cruiseSpeed = 0.7;
+const double turnSpeed = 0.0;
+const int action_time = 8;
+const int hover_time = 10;
+const int Back_time = 5;
+struct ControlCommand
+{
+	inline ControlCommand() {roll = pitch = yaw = gaz = 0;}
+	inline ControlCommand(double roll, double pitch, double yaw, double gaz)
+	{
+		this->roll = roll;
+		this->pitch = pitch;
+		this->yaw = yaw;
+		this->gaz = gaz;
+	}
+	double yaw, roll, pitch, gaz;
+};
+
+class flowTrack
+{
+
+private:
+	ros::NodeHandle n_t;
+	ros::Publisher takeoff_pub;
+	ros::Publisher land_pub;
+	ros::Publisher cmd_vel_pub;
+	ros::Publisher flowVel_pub;	
+	ros::Subscriber imu_sub;
+	ros::Subscriber flow_sub;
+	ros::Subscriber navdata_sub;
+	ros::Subscriber navdataAltitude_sub;
+	
+public:
+	
+	ControlCommand forward ;
+	ControlCommand backward ;
+	ControlCommand right ;
+	ControlCommand left ;
+	ControlCommand up;
+	ControlCommand down;
+	ControlCommand hover;
+	ControlCommand clockwise;
+	ControlCommand anticlockwise;
+	bool left_turn_finished;
+	bool right_turn_finished;
+	bool hover_finished;
+	bool back_finished;
+	int left_turntime;
+	int right_turntime;
+	int stop_time;
+	int back_time;
+
+	sensor_msgs::Imu imu;
+	ardrone_autonomy::Navdata navdata;
+	geometry_msgs::Twist cmd;
+
+	double opt_velX;
+	double opt_velY;
+	double est_velX;
+	double est_velY;
+	float opt_right;
+	float opt_left;
+	
+	flowTrack();
+	~flowTrack();
+	void imuCb(const sensor_msgs::ImuConstPtr imuPtr);
+	void flowCb(const std_msgs::Int64MultiArrayConstPtr flowPtr);
+	void flowCbAvoidance(const std_msgs::Float64MultiArrayConstPtr flowPtr);
+	void navdataCb(const ardrone_autonomy::NavdataConstPtr navdataPtr);
+	void track();
+	void detect_stop();
+	void sendCmdVel(ControlCommand cmd);
+	void sendCmdTwist();
+	void setCmdTwist();
+	void setCmdTwistAvoidance();
+	void navdataAltitudeCb(const ardrone_autonomy::navdata_altitudeConstPtr navdataAltdPtr);
+	void flowVelPub();
+};
+	
+	
+	

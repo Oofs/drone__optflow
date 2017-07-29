@@ -1,0 +1,221 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(dronetest)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp 
+  message_generation
+  std_msgs
+  sensor_msgs
+  cv_bridge
+  image_transport
+)
+
+
+catkin_package()
+
+find_package(OpenCV)
+include_directories(
+  ${OpenCV_INCLUDE_DIRS}
+)
+
+#dronetest
+set(RosControl_SOURCE_FILES         
+	src/main.cpp  
+	src/RosControl.cpp  
+	 
+)
+
+set(RosControl_HEADER_FILES      
+	src/RosControl.h 
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(dronetest ${RosControl_SOURCE_FILES} ${RosControl_HEADER_FILES})
+target_link_libraries(dronetest ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(dronetest dronetest_generate_messages_cpp)
+
+#flowControl
+
+set(pykFlow_SOURCE_FILES         
+ 
+	src/flowControl/main_pykFlow.cpp 
+	src/flowControl/RosControl.cpp
+	
+	 
+	 
+)
+
+set(pykFlow_HEADER_FILES  
+     
+	src/flowControl/RosControl.h
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(flowControl ${pykFlow_SOURCE_FILES} ${pykFlow_HEADER_FILES})
+target_link_libraries(flowControl ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(flowControl flowControl_generate_messages_cpp)
+#-----------------------------flowTrack---------------------------------
+
+set(flowTrack_SOURCE_FILES         
+ 
+	src/flowControl/main_flowTrack.cpp 
+	src/flowControl/flowTrack.cpp
+	
+	 
+	 
+)
+
+set(flowTrack_HEADER_FILES  
+     
+	src/flowControl/flowTrack.h
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(flowTrack ${flowTrack_SOURCE_FILES} ${flowTrack_HEADER_FILES})
+target_link_libraries(flowTrack ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(flowTrack flowTrack_generate_messages_cpp)
+
+
+#---------------------------opencv----------------------
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(opencv src/opencv.cpp)
+target_link_libraries(opencv ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(opencv opencv_generate_messages_cpp)
+
+#--------------------------------------faceTrack-----------------------------------
+
+
+set(faceTrack_SOURCE_FILES         
+ 
+	src/face/main_faceTrack.cpp 
+	src/face/faceTrack.cpp
+	
+	
+	 
+	 
+)
+
+set(faceTrack_HEADER_FILES  
+     
+	src/face/faceTrack.h
+	
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(faceTrack ${faceTrack_SOURCE_FILES} ${faceTrack_HEADER_FILES})
+target_link_libraries(faceTrack ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(faceTrack faceTrack_generate_messages_cpp)
+
+#------------------------------------------faceControl-----------------------------------------
+
+set(faceControl_SOURCE_FILES         
+ 
+	src/face/main_faceControl.cpp 
+	src/face/faceControl.cpp
+	
+	
+	 
+	 
+)
+
+set(faceControl_HEADER_FILES  
+     
+	src/face/faceControl.h
+	
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(faceControl ${faceControl_SOURCE_FILES} ${faceControl_HEADER_FILES})
+target_link_libraries(faceControl ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(faceControl faceControl_generate_messages_cpp)
+
+#------------------------------------------writePos-----------------------------------------
+
+set(writePose_SOURCE_FILES         
+ 
+	src/writepose/mainWritepos.cpp 
+
+	
+	
+	 
+	 
+)
+
+set(writePose_HEADER_FILES  
+     
+
+	
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(writePose ${writePose_SOURCE_FILES} ${writePose_HEADER_FILES})
+target_link_libraries(writePose ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(writePose writePose_generate_messages_cpp)
+
+#-------------------------- gray_his------------------------------
+set(gray_his_SOURCE_FILES         
+ 
+	src/gray_histogram/main_gray_his.cpp 
+	src/gray_histogram/gray_his.cpp
+
+	
+	
+	 
+	 
+)
+
+set(gray_his_HEADER_FILES  
+	
+	src/gray_histogram/gray_his.h
+     
+
+	
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(gray_his ${gray_his_SOURCE_FILES} ${gray_his_HEADER_FILES})
+target_link_libraries(gray_his ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(gray_his gray_his_generate_messages_cpp)
+
+#-------------------------- obstacle_hsv------------------------------
+set(obstacle_hsv_SOURCE_FILES         
+ 
+	src/obstacle_hsv/main_obstacle_hsv.cpp 
+	src/obstacle_hsv/obstacle_hsv.cpp
+
+	
+	
+	 
+	 
+)
+
+set(obstacle_hsv_HEADER_FILES  
+	
+	src/obstacle_hsv/obstacle_hsv.h
+     
+
+	
+	
+	 
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+add_executable(obstacle_hsv ${obstacle_hsv_SOURCE_FILES} ${obstacle_hsv_HEADER_FILES})
+target_link_libraries(obstacle_hsv ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(obstacle_hsv obstacle_hsv_generate_messages_cpp)
+
+
+

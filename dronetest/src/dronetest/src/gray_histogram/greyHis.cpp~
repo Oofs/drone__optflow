@@ -1,0 +1,99 @@
+//
+//  greyHis.cpp
+//  lk
+//
+//  Created by claude on 16/7/25.
+//  Copyright © 2016年 claude. All rights reserved.
+//
+
+#include "opencv2/opencv.hpp"
+#include <stdio.h>
+#include <iostream>
+#include <math.h>
+
+#include<fstream>
+using namespace std;
+using namespace cv;
+
+int main(){
+    
+    CvCapture* capture;
+    IplImage* frame;
+    char filepath[] ="/users/claude/desktop/flowpic/obstacle/obstacle3.mov";
+    
+    capture = cvCreateFileCapture(filepath);
+    //   capture = cvCreateCameraCapture(0);
+    
+    while(1) {
+        
+        
+        
+    frame = cvQueryFrame( capture );
+    
+    IplImage* grey;
+    IplImage* hist_img;
+    
+   
+    grey = cvCreateImage(cvGetSize(frame), 8, 1);
+    cvCvtColor(frame, grey, CV_BGR2GRAY);
+    
+    
+    int grey_bins = 50;
+    int scale = 5;
+    hist_img = cvCreateImage(cvSize(scale*grey_bins, 300), 8, 3);
+    
+    CvHistogram* hist;{
+        int hist_size[]={grey_bins};
+        float g_range[] = {0,255};
+        float* ranges[] = {g_range};
+        hist = cvCreateHist(1, hist_size, CV_HIST_ARRAY,ranges,1);
+    }
+    
+    cvCalcHist(&grey, hist,0,0);
+    
+    
+    cvRectangle(hist_img, cvPoint(0, 0), cvPoint(hist_img->width, hist_img->height), CV_RGB(255,255,255),CV_FILLED);
+    
+    float max_value = 0;
+    float sum=0;
+    cvGetMinMaxHistValue(hist, 0, &max_value,0,0);
+    for(int i =0;i<grey_bins;i++){
+        sum += hist->mat.data.fl[i];
+        
+    }
+    
+    for( int h = 0; h < grey_bins; h++ ) {
+        
+        float bin_val = hist->mat.data.fl[h];
+        
+        
+        int intensity = cvRound( bin_val*300/sum );
+        cvRectangle(
+                    hist_img,
+                    cvPoint( h*scale, hist_img->height-1),
+                    cvPoint( (h+1)*scale - 1, hist_img->height-intensity),
+                    CvScalar((int)h*255/grey_bins,(int)h*255/grey_bins,(int)h*255/grey_bins),
+                    CV_FILLED
+                    );
+        
+    }
+    cvNamedWindow("Grey_histogram");
+    cvShowImage("Grey_histogram", hist_img);
+    cvNamedWindow("grey");
+    cvShowImage("grey", grey);
+
+        cvReleaseData(grey);
+        cvReleaseData(frame);
+        cvReleaseData(hist_img);
+    
+        
+        
+        
+        char k = cvWaitKey(0);
+        if( k == 27 ) break;
+
+}
+
+    
+    
+}

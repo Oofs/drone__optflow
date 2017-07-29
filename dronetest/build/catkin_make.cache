@@ -1,0 +1,2 @@
+dronetest
+-DCATKIN_DEVEL_PREFIX=/opt/dronetest/devel -DCMAKE_INSTALL_PREFIX=/opt/dronetest/install -G Unix Makefiles

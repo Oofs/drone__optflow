@@ -1,0 +1,14 @@
+
+#include "grey_his.h"
+
+
+
+//-------------------------------Main Function------------------------------------------
+int main(int argc, char **argv){
+
+ros::init(argc,argv,"grey_his");
+grey_his grey;
+ros::spin();
+return 0;
+}
+

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/opt/dronetest/src/dronetest/src/face.cpp
+opencv2/opencv.hpp
+/opt/dronetest/src/dronetest/src/opencv2/opencv.hpp
+opencv2/imgproc/imgproc.hpp
+/opt/dronetest/src/dronetest/src/opencv2/imgproc/imgproc.hpp
+opencv2/highgui/highgui.hpp
+/opt/dronetest/src/dronetest/src/opencv2/highgui/highgui.hpp
+opencv2/objdetect/objdetect.hpp
+/opt/dronetest/src/dronetest/src/opencv2/objdetect/objdetect.hpp
+sstream
+-
+string
+-
+

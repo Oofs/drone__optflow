@@ -1,0 +1,8 @@
+prefix=/opt/dronetest/devel
+
+Name: dronetest
+Description: Description of dronetest
+Version: 0.0.0
+Cflags: 
+Libs: -L/opt/dronetest/devel/lib 
+Requires: 

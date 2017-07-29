@@ -1,0 +1,27 @@
+#include <unistd.h>
+#include <curses.h>
+
+#include "ros/ros.h"
+#include "ros/callback_queue.h"
+
+
+#include "std_msgs/Empty.h" 
+#include "geometry_msgs/Twist.h"
+#include "iostream"
+
+#include "control.h"
+
+void sendVel(ControlCommand cmd)
+{
+	
+	geometry_msgs::Twist cmdT;
+	cmdT.angular.z = -cmd.yaw;
+	cmdT.linear.z = cmd.gaz;
+	cmdT.linear.x = -cmd.pitch;
+	cmdT.linear.y = -cmd.roll;
+
+	cmdT.angular.x = cmdT.angular.y = 1;
+
+	vel_pub.publish(cmdT);
+}
+
