@@ -4,8 +4,8 @@ This is one part of my master degree project in Beihang University.The goal of m
 
 
 
-![alt text]（https://github.com/Oofs/drone__optflow/blob/master/result/DroneTrace.jpg）
-![alt text] (https://github.com/Oofs/drone__optflow/blob/master/result/4walls.jpg)
+![alt text]（https://github.com/Oofs/drone__optflow/blob/master/result/DroneTrace.jpg)
+
 
 This picture shows the drone flying trace in simulation environment.
 
